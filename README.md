@@ -1,7 +1,5 @@
 ## Requirements
 
-
-
 No requirements.
 
 ## Providers
