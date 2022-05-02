@@ -48,10 +48,30 @@ jobs:
       run: terraform validate
 
    # Select Terraform workspace & generates an execution plan for Terraform
-    - name: Terraform Workspace
+    - name: Terraform Workspace Dev
       if: github.ref == 'refs/heads/terraform_dev'
       env: 
         environment: dev
+      run: | 
+        terraform workspace list
+        terraform workspace select ${{ env.environment }}
+        terraform plan -out dev.tfplan -input=false
+
+   # Select Terraform workspace & generates an execution plan for Terraform   
+    - name: Terraform Workspace uat
+      if: github.ref == 'refs/heads/terraform_dev'
+      env: 
+        environment: uat
+      run: | 
+        terraform workspace list
+        terraform workspace select ${{ env.environment }}
+        terraform plan -out dev.tfplan -input=false
+
+   # Select Terraform workspace & generates an execution plan for Terraform   
+    - name: Terraform Workspace prod
+      if: github.ref == 'refs/heads/terraform_dev'
+      env: 
+        environment: prod
       run: | 
         terraform workspace list
         terraform workspace select ${{ env.environment }}
