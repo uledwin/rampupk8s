@@ -1,7 +1,7 @@
 name: 'Terraform CI Pipeline'
 
 on:
-  push:
+  pull_request:
     branches:  
     - terraform_dev
     - terraform_uat

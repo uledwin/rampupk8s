@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   terraform:
-    name: 'Terraform CI Pipeline'
+    name: 'Terraform CD Pipeline'
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: 97f36c8f-940d-4c8c-813e-e9af0f248f08
@@ -56,7 +56,7 @@ jobs:
         terraform workspace list
         terraform workspace select ${{ env.environment }}
         terraform plan -out dev.tfplan -input=false
-        terraform apply dev.tfplan -input=false
+        terraform apply dev.tfplan
 
    # Select Terraform workspace & generates an execution plan for Terraform   
     - name: Terraform Workspace uat
@@ -67,7 +67,7 @@ jobs:
         terraform workspace list
         terraform workspace select ${{ env.environment }}
         terraform plan -out uat.tfplan -input=false
-        terraform apply uat.tfplan -input=false
+        terraform apply uat.tfplan
 
    # Select Terraform workspace & generates an execution plan for Terraform   
     - name: Terraform Workspace prod
@@ -78,4 +78,4 @@ jobs:
         terraform workspace list
         terraform workspace select ${{ env.environment }}
         terraform plan -out prod.tfplan -input=false
-        terraform apply prod.tfplan -input=false
+        terraform apply prod.tfplan
