@@ -46,6 +46,7 @@ jobs:
    # Select Terraform workspace 
     - name: Terraform Workspace
       run: | 
+        terraform workspace list
         terraform workspace select ${{ env.environment }}
 
     # Generates an execution plan for Terraform
