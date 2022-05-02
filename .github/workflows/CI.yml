@@ -43,14 +43,10 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
     
-   # Checks that all Terraform configuration files adhere to a canonical format
+   # Select Terraform workspace 
     - name: Terraform Workspace
       run: | 
         terraform workspace select ${{ env.environment }}
-
-    # Select Terraform workspace  
-    - name: Terraform Select Workspace
-      run: terraform plan -out dev.tfplan -input=false
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
