@@ -1,11 +1,11 @@
-name: 'Terraform CI Pipeline'
+name: 'Backend CI Pipeline'
 
 on:
   pull_request:
     branches:  
-    - terraform_dev
-    - terraform_uat
-    - terraform_main
+    - backend_dev
+    - backend_uat
+    - backend_main
     
 permissions:
   contents: read
@@ -32,52 +32,3 @@ jobs:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
 
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init
-
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt -check
-
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform validate
-      run: terraform validate
-
-   # Select Terraform workspace & generates an execution plan for Terraform
-    - name: Terraform Workspace Dev
-      if: ${{ github.event.pull_request.base.ref == 'terraform_dev' }}
-      env: 
-        environment: dev
-      run: | 
-        terraform workspace list
-        terraform workspace select ${{ env.environment }}
-        terraform plan -out dev.tfplan -input=false
-
-   # Select Terraform workspace & generates an execution plan for Terraform   
-    - name: Terraform Workspace uat
-      if: ${{ github.event.pull_request.base.ref == 'terraform_uat' }}
-      env: 
-        environment: uat
-      run: | 
-        terraform workspace list
-        terraform workspace select ${{ env.environment }}
-        terraform plan -out uat.tfplan -input=false
-
-   # Select Terraform workspace & generates an execution plan for Terraform   
-    - name: Terraform Workspace prod
-      if: ${{ github.event.pull_request.base.ref == 'terraform_main' }}
-      env: 
-        environment: prod
-      run: | 
-        terraform workspace list
-        terraform workspace select ${{ env.environment }}
-        terraform plan -out prod.tfplan -input=false
