@@ -1,7 +1,7 @@
-name: 'Terraform CI Pipeline'
+name: 'Terraform CD Pipeline'
 
 on:
-  pull_request:
+  push:
     branches:  
     - terraform_dev
     - terraform_uat
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   terraform:
-    name: 'Terraform CI Pipeline'
+    name: 'Terraform CD Pipeline'
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: 97f36c8f-940d-4c8c-813e-e9af0f248f08
@@ -27,11 +27,6 @@ jobs:
         shell: bash
 
     steps:
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
-
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
@@ -54,30 +49,33 @@ jobs:
 
    # Select Terraform workspace & generates an execution plan for Terraform
     - name: Terraform Workspace Dev
-      if: ${{ github.event.pull_request.base.ref == 'terraform_dev' }}
+      if: ${{ github.ref == 'refs/heads/terraform_dev' }}
       env: 
         environment: dev
       run: | 
         terraform workspace list
         terraform workspace select ${{ env.environment }}
         terraform plan -out dev.tfplan -input=false
+        terraform apply dev.tfplan
 
    # Select Terraform workspace & generates an execution plan for Terraform   
     - name: Terraform Workspace uat
-      if: ${{ github.event.pull_request.base.ref == 'terraform_uat' }}
+      if: ${{ github.ref == 'refs/heads/terraform_uat' }}
       env: 
         environment: uat
       run: | 
         terraform workspace list
         terraform workspace select ${{ env.environment }}
         terraform plan -out uat.tfplan -input=false
+        terraform apply uat.tfplan
 
    # Select Terraform workspace & generates an execution plan for Terraform   
     - name: Terraform Workspace prod
-      if: ${{ github.event.pull_request.base.ref == 'terraform_main' }}
+      if: ${{ github.ref == 'refs/heads/terraform_main' }}
       env: 
         environment: prod
       run: | 
         terraform workspace list
         terraform workspace select ${{ env.environment }}
         terraform plan -out prod.tfplan -input=false
+        terraform apply prod.tfplan

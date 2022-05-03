@@ -1,5 +1,3 @@
-################
-#### aks
 variable "rg_name" {
   description = "Name Resource Group on Azure"
   type        = string
@@ -15,6 +13,8 @@ variable "prefix" {
   type        = string
 }
 
+################
+#### aks
 variable "cluster_name" {
   description = "AKS name in Azure"
   type        = string
@@ -39,6 +39,8 @@ variable "azure_acr_role_name" {
   description = "Name of policy of azure Container Registry"
 }
 
+################
+#### SQL
 variable "sql_server_name" {
   description = "Name of Ms SQL Server"
   type        = string
