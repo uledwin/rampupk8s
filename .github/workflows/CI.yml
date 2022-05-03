@@ -64,7 +64,7 @@ jobs:
 
    # Select Terraform workspace & generates an execution plan for Terraform   
     - name: Terraform Workspace uat
-      if: ${{ github.ref == 'refs/heads/terraform_uat' }}
+      if: ${{ github.event.pull_request.base.ref == 'terraform_uat' }}
       env: 
         environment: uat
       run: | 
@@ -74,7 +74,7 @@ jobs:
 
    # Select Terraform workspace & generates an execution plan for Terraform   
     - name: Terraform Workspace prod
-      if: ${{ github.ref == 'refs/heads/terraform_main' }}
+      if: ${{ github.event.pull_request.base.ref == 'terraform_main' }}
       env: 
         environment: prod
       run: | 
