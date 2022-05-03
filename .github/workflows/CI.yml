@@ -27,6 +27,11 @@ jobs:
         shell: bash
 
     steps:
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
@@ -49,7 +54,7 @@ jobs:
 
    # Select Terraform workspace & generates an execution plan for Terraform
     - name: Terraform Workspace Dev
-      if: ${{ github.ref == 'refs/heads/terraform_dev' }}
+      if: ${{ github.event.pull_request.base.ref == 'terraform_dev' }}
       env: 
         environment: dev
       run: | 

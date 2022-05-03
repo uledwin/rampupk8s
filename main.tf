@@ -15,6 +15,7 @@ module "mysql" {
   sql_server_password = var.sql_server_password
   sql_database_name   = "${var.prefix}-${terraform.workspace}-${var.sql_database_name}"
   name_keyvault       = "${var.prefix}-${terraform.workspace}-${var.name_keyvault}"
+  depends_on          = [module.resourcegroup]
 }
 
 module "aks" {
@@ -28,5 +29,5 @@ module "aks" {
   system_node_count   = var.system_node_count
   azure_acr_name      = "${var.prefix}${terraform.workspace}${var.azure_acr_name}" ## alpha numeric characters only are allowed in name
   azure_acr_role_name = "${var.prefix}-${terraform.workspace}-${var.azure_acr_role_name}"
-
+  depends_on          = [module.resourcegroup]
 }

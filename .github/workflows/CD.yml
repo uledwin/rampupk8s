@@ -1,4 +1,4 @@
-name: 'Terraform CI Pipeline'
+name: 'Terraform CD Pipeline'
 
 on:
   push:
